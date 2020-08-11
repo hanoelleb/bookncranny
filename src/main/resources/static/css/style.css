@@ -1,0 +1,10 @@
+@charset "ISO-8859-1";
+
+img {
+	height: 33vh;
+	width: auto;
+}
+
+.carousel-inner img {
+  margin: auto;
+}
