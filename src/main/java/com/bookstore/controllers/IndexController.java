@@ -9,4 +9,19 @@ public class IndexController {
 	public String index() {
 		return "index";
 	}
+	
+	@RequestMapping("/account")
+	public String account() {
+		return "account";
+	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+	
+	@RequestMapping("/sign-up")
+	public String signUp() {
+		return "sign-up";
+	}
 }
