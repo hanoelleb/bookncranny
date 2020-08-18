@@ -3,7 +3,7 @@
 <head th:replace="common/header :: common-header" />
 <div th:replace="common/header :: navbar"></div>
 <div class="container-fluid">
-	<form class="account-form col-xs-4" th:classappend="${classActiveLogin}? 'in active' ">
+	<form method="POST" action="/login" class="account-form col-xs-4" th:classappend="${classActiveLogin}? 'in active' ">
 		<h3 style="color: white">Login</h3>
 		<input type='text' class="form-control" name="username" placeholder="username" required />
 		<input type='password' class="form-control" name="password" placeholder="password" required />

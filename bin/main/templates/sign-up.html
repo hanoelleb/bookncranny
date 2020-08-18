@@ -6,10 +6,17 @@
 	<form method="POST" th:action="@{/sign-up}" th:object="${user}" class="account-form col-xs-4" enctype="UTF-8">
 		<h3 style="color: white">Sign up</h3>
 		<input type='text' class="form-control" name="username" placeholder="Username" required />
+		<span th:if="${usernameExists}">This username is taken.</span>
+		
 		<input type='email' class="form-control" name="email" placeholder="Email" required />
+		<span th:if="${emailUsed}"></span>
 		<p style="color: white">*Email addresses are not made public. An email is required for
 			password changes.</p>
+			
+			
 		<input type='password' class="form-control" name="password" placeholder="Password" required />
+		<input type='password' class="form-control" name="confirm" placeholder="Confirm password" required />
+		
 		<button type="submit" class="btn btn-default">Sign up</button>
 	</form>
 	<span>Already have an account? <a href="@{/login}">Login</a></span>

@@ -53,9 +53,9 @@
 					type="button" id="dropdownMenuButton" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" role="button">Account</a>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<li class="dropdown-item"><a sec:authorize= "isAnonymous()" th:href="@{/login}">Login</a></li>
+						<li class="dropdown-item"><a sec:authorize= "isAnonymous()" href="/login">Login</a></li>
 						<li class="dropdown-item"><a  sec:authorize= "isAnonymous()" href="/sign-up">Sign up</a></li>
-						<li class="dropdown-item"><a sec:authorize= "isAuthenticated()" href="@{/account}">My account</a></li>
+						<li class="dropdown-item"><a sec:authorize= "isAuthenticated()" href="/account">My account</a></li>
 						<li class="dropdown-item"><a sec:authorize= "isAuthenticated()" th:href="@{/logout}">Logout</a></li>
 					</ul></li>
 				

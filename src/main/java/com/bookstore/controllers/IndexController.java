@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,7 +40,17 @@ public class IndexController {
 	}
 
 	@RequestMapping("/account")
-	public String account() {
+	public String account(Model model) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String name = auth.getName(); //get logged in username
+	    LOG.info("USER " + name + " IS LOGGED IN ");
+	    
+	    if (name != null) {
+	    	User user = userService.findByUsername(name);
+	    	model.addAttribute("user", user);
+	    }
+		
 		return "account";
 	}
 
@@ -85,7 +97,10 @@ public class IndexController {
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(newUser,role));
 		userService.createUser(newUser, userRoles);
-		return "login";
+		
+		model.addAttribute("user", newUser);
+		
+		return "account";
 	}
 	
 	@RequestMapping("/sign-up")
