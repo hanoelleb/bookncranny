@@ -20,23 +20,30 @@
 						<div th:if="${book != null}">
 							<div class="row">
 								<div class="col-xs-3">
-									<img class="img-responsive shelf-book"
+									<a th:href="@{/book/}+${book.id}"> <img
+										class="img-responsive shelf-book"
 										th:src="#{admin-path}+@{/images/books/}+${book.id}+'.png'">
+									</a>
 								</div>
 
 								<div class="col-xs-9">
-									<h4 th:text="${book.title}"></h4>
-									<span th:text="${book.publicationDate}"></span> <span
-										th:text="${book.author}"></span> <span
-										th:text="${#strings.capitalize(book.format)}"></span> <span
-										th:text="${book.numberOfPages}"></span> <span
-										style="font-size: x-large; color: #db3208;">$<span
-										th:text="${#numbers.formatDecimal(book.ourPrice, 0, 'COMMA', 2, 'POINT')}"></span></span>
+									<a th:href="@{book/}+${book.id}">
+										<h3 th:text="${book.title}"></h3>
+									</a>
+									<h4 th:text="${book.author}"></h4>
 
-									<span style="font-size: x-large; text-decoation: line-through;">$<span
+									<span
+										style="font-size: x-large; text-decoration: line-through;">$<span
 										th:text="${#numbers.formatDecimal(book.listPrice, 0, 'COMMA', 2, 'POINT')}"></span></span>
 
+									<span style="font-size: x-large; color: #db3208;">$<span
+										th:text="${#numbers.formatDecimal(book.ourPrice, 0, 'COMMA', 2, 'POINT')}"></span></span>
+
 									<p th:text="${#strings.abbreviate(book.description, 500)}"></p>
+									<span>Published <span th:text="${book.publicationDate}"></span></span>
+									<span
+										th:text="${#strings.capitalize(book.format) + ' edition ('}"></span>
+									<span th:text="${book.numberOfPages}+' pages)'"></span>
 								</div>
 							</div>
 						</div>

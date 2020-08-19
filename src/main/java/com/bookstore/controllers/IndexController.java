@@ -1,10 +1,14 @@
 package com.bookstore.controllers;
 
+import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -125,11 +130,37 @@ public class IndexController {
 	public String bookshelf(Model model) {
 		List<Book> bookList = bookService.findAll();
 		
-		LOG.info("SIZE: " + bookList.size());
-		
 		model.addAttribute("bookList", bookList);
 		
 		return "bookshelf";
+	}
+	
+	@RequestMapping("/book/{id}")
+	public String book(@PathVariable("id") Long id, Model model, Principal principal) {
+		
+		LOG.info("ID: " + id);
+		
+		if (principal != null) {
+			String username = principal.getName();
+			User user = userService.findByUsername(username);
+			model.addAttribute("user", user);
+		}
+		
+		Optional<Book> find = bookService.findOne(id);
+		
+		if (!find.isPresent()) {
+			model.addAttribute("empty", true);
+		} else {
+			Book book = find.get();
+			model.addAttribute("book", book);
+		}
+		
+		List<Integer> qtys = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+		
+		model.addAttribute("qtyList", qtys);
+		model.addAttribute("qty", 1);
+		
+		return "book-detail";
 	}
 
 }
