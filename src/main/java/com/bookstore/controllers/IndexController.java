@@ -217,6 +217,9 @@ public class IndexController {
 		model.addAttribute("userPaymentList", user.getUserPaymentList());
 		model.addAttribute("userShippingList", user.getUserShippingList());
 		
+		model.addAttribute("classActiveBilling", true);
+		model.addAttribute("addNewCreditCard", true);
+		
 		return "account";
 	}
 	
@@ -247,6 +250,7 @@ public class IndexController {
 		
 		model.addAttribute("userPaymentList", user.getUserPaymentList());
 		model.addAttribute("userShippingList", user.getUserShippingList());
+		model.addAttribute("listOfCreditCards", true);
 		
 		return "account";
 	}

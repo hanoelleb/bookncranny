@@ -18,7 +18,7 @@ public class UserBilling {
 	private String userBillingCity;
 	private String userBillingState;
 	private String userBillingCountry;
-	private String userBillingZipCode;
+	private String userBillingZipcode;
 	
 	
 	public Long getId() {
@@ -77,12 +77,12 @@ public class UserBilling {
 		this.userBillingCountry = userBillingCountry;
 	}
 
-	public String getUserBillingZipCode() {
-		return userBillingZipCode;
+	public String getUserBillingZipcode() {
+		return userBillingZipcode;
 	}
 
 	public void setUserBillingZipCode(String userBillingZipCode) {
-		this.userBillingZipCode = userBillingZipCode;
+		this.userBillingZipcode = userBillingZipCode;
 	}
 
 	public UserPayment getUserPayment() {
