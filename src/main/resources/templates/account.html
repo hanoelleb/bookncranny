@@ -5,32 +5,33 @@
 <div class="container">
 	<div class="row">
 		<h1>Your account</h1>
-		<h3><span>Welcome back, </span><span th:text="${user.username}"></span></h3>
+		<h3>
+			<span>Welcome back, </span><span th:text="${user.username}"></span>
+		</h3>
 	</div>
 
 	<div class="row">
 		<!-- nav tabs -->
 		<ul class="nav nav-tabs">
-			<li th:classappends="${classActiveOrders}? 'active'"><a
-				href="#tab-1" data-toggle="tab"> <span
-					style="color: deepskyblue">Orders</span>
-			</a></li>
-
-			<li th:classappends="${classActiveBilling}? 'active'"><a
-				href="#tab-1" data-toggle="tab"> <span
-					style="color: deepskyblue">Billing</span>
-			</a></li>
-
-			<li th:classappends="${classActiveShipping}? 'active'"><a
-				href="#tab-1" data-toggle="tab"> <span
-					style="color: deepskyblue">Shipping</span>
-			</a></li>
-
 			<li th:classappends="${classActiveEdit}? 'active'"><a
 				href="#tab-1" data-toggle="tab"> <span
 					style="color: deepskyblue">Edit</span>
 			</a></li>
 
+			<li th:classappends="${classActiveOrders}? 'active'"><a
+				href="#tab-2" data-toggle="tab"> <span
+					style="color: deepskyblue">Orders</span>
+			</a></li>
+
+			<li th:classappends="${classActiveBilling}? 'active'"><a
+				href="#tab-3" data-toggle="tab"> <span
+					style="color: deepskyblue">Billing</span>
+			</a></li>
+
+			<li th:classappends="${classActiveShipping}? 'active'"><a
+				href="#tab-4" data-toggle="tab"> <span
+					style="color: deepskyblue">Shipping</span>
+			</a></li>
 		</ul>
 
 
@@ -40,7 +41,7 @@
 				<div class="panel panel-default" style="border: none;">
 					<div class="panel-body"
 						style="background-color: #ededed; margin-top: 20px;">
-						<form th:action="@{/update-info}" mehtod="post">
+						<form th:action="@{/update-info}" method="post">
 							<input type="hidden" name="id" th-value="${user.id}">
 							<div class="bg-info" th:if="${updateUserInfo}">User info
 								updated.</div>
@@ -50,8 +51,7 @@
 									<div class="col-xs-6">
 										<input type='text' class="form-control" id="firstName"
 											name="firstName" placeholder="First name"
-											th:value="${user.firstName}" /> 
-										<input type='text'
+											th:value="${user.firstName}" /> <input type='text'
 											class="form-control" id="lastName" name="lastName"
 											placeholder="Last name" th:value="${user.lastName}" />
 									</div>
@@ -63,32 +63,93 @@
 									name="username" placeholder="username"
 									th:value="${user.username}" />
 							</div>
-							
+
 							<div class="form-group">
 								<input type='password' class="form-control" id="currentPass"
 									name="currentPass" placeholder="Current Password"
 									th:value="${password}" />
 							</div>
 							<p>Enter your current password to change password or email.</p>
-							
+
 							<div class="form-group">
-								<input type='email' class="form-control" id="email"
-									name="email" placeholder="email"
-									th:value="${user.email}" />
+								<input type='email' class="form-control" id="email" name="email"
+									placeholder="email" th:value="${user.email}" />
 							</div>
-							
+
 							<div class="form-group">
 								<input type='password' class="form-control" id="newPass"
 									name="newPass" placeholder="New Password" />
 							</div>
-							
+
 							<div class="form-group">
 								<input type='password' class="form-control" id="confirmPass"
 									placeholder="Confirm new password" />
 							</div>
 
-							<button type="submit" class="btn btn-primary"></button>
+							<button type="submit" class="btn btn-primary">Update</button>
 						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="tab-2">
+				<div class="panel panel-default" style="border: none;">
+					<div class="panel-body"
+						style="background-color: #ededed; margin-top: 20px;"></div>
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="tab-3">
+				<div class="panel panel-default" style="border: none;">
+					<div class="panel-body"
+						style="background-color: #ededed; margin-top: 20px;">
+						<ol>
+							<li class="breadcrumb-item active"><a
+								th:href="@{/card-list}" th:style="${listOfCreditCards}">All
+									cards</a></li>
+
+							<li class="breadcrumb-item active"><a th:href="@{/card/add}"
+								th:style="${addNewCreditCard}">Add</a></li>
+						</ol>
+
+						<div th:if="${listOfCreditCards}">
+							<form th:action="@{/set-default-payment}" method="POST">
+								<table>
+									<thead>
+										<tr>
+											<th>Default</th>
+											<th>Credit Card</th>
+											<th>Operations</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="userPayment : ${userPaymentList}">
+											<td>
+												<input type="radio" name="defaultUserPaymentId" th:value="${userPayment.id}" th:checked="${userPayment.defaultPayment}">
+											</td>
+											
+											<td th:text="${userPayment.cardName}">
+											</td>
+											
+											<td>
+											<a th:href="@{/update-card(id=${userPayment.id})}"><i class="fa fa-pencil"></i></a>
+											<a th:href="@{/remove-card(id=${userPayment.id})}"><i class="fa fa-times"></i></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<button>Save</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="tab-4">
+				<div class="panel panel-default" style="border: none;">
+					<div class="panel-body"
+						style="background-color: #ededed; margin-top: 20px;">
+						<form th:action="@{/update-info}" method="post"></form>
 					</div>
 				</div>
 			</div>

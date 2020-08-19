@@ -2,6 +2,7 @@ package com.bookstore.models;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,6 +38,16 @@ public class User implements UserDetails {
 	String firstName;
 	String lastName;
 	
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
+	private List<UserShipping> userShippingList;
+	
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
+	private List<UserPayment> userPaymentList;
+	
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<UserRole> userRoles = new HashSet<>();
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -50,10 +61,6 @@ public class User implements UserDetails {
 		this.lastName = lastName;
 	}
 	boolean enabled = true;
-	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JsonIgnore
-	private Set<UserRole> userRoles = new HashSet<>();
 	
 	public long getId() {
 		return id;
@@ -91,6 +98,24 @@ public class User implements UserDetails {
 		Set<GrantedAuthority> authorities = new HashSet<>();
 		userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
 		return null;
+	}
+	
+	
+	
+	public List<UserShipping> getUserShippingList() {
+		return userShippingList;
+	}
+	public void setUserShippingList(List<UserShipping> userShippingList) {
+		this.userShippingList = userShippingList;
+	}
+	public List<UserPayment> getUserPaymentList() {
+		return userPaymentList;
+	}
+	public void setUserPaymentList(List<UserPayment> userPaymentList) {
+		this.userPaymentList = userPaymentList;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
