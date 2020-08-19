@@ -1,6 +1,7 @@
 package com.bookstore.controllers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bookstore.controllers.security.Role;
 import com.bookstore.controllers.security.UserRole;
+import com.bookstore.models.Book;
 import com.bookstore.models.User;
+import com.bookstore.service.impl.BookService;
 import com.bookstore.service.impl.UserSecurityService;
 import com.bookstore.service.impl.UserService;
 import com.bookstore.utility.SecurityUtility;
@@ -33,6 +36,9 @@ public class IndexController {
 
 	@Autowired
 	private UserSecurityService userSecurityService;
+	
+	@Autowired
+	private BookService bookService;
 
 	@RequestMapping("/")
 	public String index() {
@@ -109,35 +115,21 @@ public class IndexController {
 		return "sign-up";
 	}
 
-
-	/*
-	 * @RequestMapping("/sign-up") public String signUp(Locale
-	 * locale, @RequestParam("token") String token, Model model){
-	 * 
-	 * PasswordResetToken passToken = userService.getPasswordResetToken(token); if
-	 * (passToken == null) { String message = "Invalid Token.";
-	 * model.addAttribute("message", message); return "redirect:/badRequest"; }
-	 * 
-	 * User user = passToken.getUser(); String username = user.getUsername();
-	 * 
-	 * //Set current logging session to user UserDetails userDetails =
-	 * userSecurityService.loadUserByUsername(username);
-	 * 
-	 * Authentication authentication = new
-	 * UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
-	 * userDetails.getAuthorities());
-	 * 
-	 * SecurityContextHolder.getContext().setAuthentication(authentication);
-	 * 
-	 * model.addAttribute("classActiveEdit", true);
-	 * 
-	 * return "account"; }
-	 */
-
 	@RequestMapping("/forgetPassword")
 	public String forgetPassword(Model model) {
 		model.addAttribute("classActiveForgetPassword", true);
 		return "account";
+	}
+	
+	@RequestMapping("/bookshelf")
+	public String bookshelf(Model model) {
+		List<Book> bookList = bookService.findAll();
+		
+		LOG.info("SIZE: " + bookList.size());
+		
+		model.addAttribute("bookList", bookList);
+		
+		return "bookshelf";
 	}
 
 }
