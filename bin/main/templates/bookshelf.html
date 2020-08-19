@@ -39,7 +39,7 @@
 									<span style="font-size: x-large; color: #db3208;">$<span
 										th:text="${#numbers.formatDecimal(book.ourPrice, 0, 'COMMA', 2, 'POINT')}"></span></span>
 
-									<p th:text="${#strings.abbreviate(book.description, 500)}"></p>
+									<p th:utext="${#strings.abbreviate(book.description, 500)}"></p>
 									<span>Published <span th:text="${book.publicationDate}"></span></span>
 									<span
 										th:text="${#strings.capitalize(book.format) + ' edition ('}"></span>
