@@ -23,6 +23,13 @@ public class UserPayment {
 	private String holderName;
 	private boolean defaultPayment;
 	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy="userPayment")
+	private UserBilling userBilling;
+	
 	public Long getId() {
 		return id;
 	}
@@ -110,11 +117,4 @@ public class UserPayment {
 	public void setUserBilling(UserBilling userBilling) {
 		this.userBilling = userBilling;
 	}
-
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;
-	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy="userPayment")
-	private UserBilling userBilling;
 }

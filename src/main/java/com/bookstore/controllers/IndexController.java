@@ -223,6 +223,25 @@ public class IndexController {
 		return "account";
 	}
 	
+	@RequestMapping(value="/card/add", method=RequestMethod.POST)
+	public String createCard(
+			@ModelAttribute("userPayment") UserPayment userPayment,
+			@ModelAttribute("userBilling") UserBilling userBilling,
+			Principal principal, Model model
+			){
+		User user = userService.findByUsername(principal.getName());
+		userService.updateUserBilling(userBilling, userPayment, user);
+		
+		model.addAttribute("user", user);
+		model.addAttribute("userPaymentList", user.getUserPaymentList());
+		model.addAttribute("userShippingList", user.getUserShippingList());
+		model.addAttribute("listOfCreditCards", true);
+		model.addAttribute("classActiveBilling", true);
+		model.addAttribute("listOfShippingAddresses", true);
+		
+		return "account";
+	}
+	
 	@RequestMapping("/shipping-list")
 	public String shippingList(Model model, Principal principal, HttpServletRequest request) {
 		User user = userService.findByUsername(principal.getName());

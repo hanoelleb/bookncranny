@@ -21,6 +21,10 @@ public class UserBilling {
 	private String userBillingZipcode;
 	
 	
+	@OneToOne(cascade=CascadeType.ALL)
+	private UserPayment userPayment;
+
+	
 	public Long getId() {
 		return id;
 	}
@@ -92,7 +96,4 @@ public class UserBilling {
 	public void setUserPayment(UserPayment userPayment) {
 		this.userPayment = userPayment;
 	}
-
-	@OneToOne(cascade=CascadeType.ALL)
-	private UserPayment userPayment;
 }
