@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.FormSubmitEvent.MethodType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -312,6 +313,27 @@ public class IndexController {
 
 			return "account";
 		}
+	}
+	
+	@RequestMapping(value="/set-default-payment", method=RequestMethod.POST)
+	public String setDefaultPayment(
+			@ModelAttribute("defaultUserPaymentId") Long defaultUserPaymentId,
+			Principal principal, Model model
+			) {
+		
+		User user = userService.findByUsername(principal.getName());
+		userService.setUserDefaultPayment(defaultUserPaymentId, user);
+		
+		model.addAttribute("user", user);
+		
+		model.addAttribute("listOfCreditCards", true);
+		model.addAttribute("classActiveBilling", true);
+		model.addAttribute("listOfShippingAddresses", true);
+		
+		model.addAttribute("userPaymentList", user.getUserPaymentList());
+		model.addAttribute("userShippingList", user.getUserShippingList());
+		
+		return "account";
 	}
 
 	@RequestMapping("/shipping-list")

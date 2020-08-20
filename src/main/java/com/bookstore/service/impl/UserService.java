@@ -1,5 +1,6 @@
 package com.bookstore.service.impl;
 
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import com.bookstore.models.UserBilling;
 import com.bookstore.models.UserPayment;
 import com.bookstore.repository.PasswordTokenResetRepository;
 import com.bookstore.repository.RoleRepository;
+import com.bookstore.repository.UserPaymentRepository;
 import com.bookstore.repository.UserRepository;
 import com.bookstore.service.IUserService;
 
@@ -31,6 +33,9 @@ public class UserService implements IUserService {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Autowired
+	UserPaymentRepository userPaymentRepository;
+	
 	@Override
 	public PasswordResetToken getPasswordResetToken(String token) {
 		return passwordTokenResetRepository.findByToken(token);
@@ -83,5 +88,20 @@ public class UserService implements IUserService {
 		userBilling.setUserPayment(userPayment);
 		user.getUserPaymentList().add(userPayment);
 		save(user);
+	}
+
+	@Override
+	public void setUserDefaultPayment(Long id, User user) {
+		List<UserPayment> userPayments = (List<UserPayment>) userPaymentRepository.findAll();
+		
+		for (UserPayment u : userPayments) {
+			if (u.getId() == id) {
+				u.setDefaultPayment(true);
+				userPaymentRepository.save(u);
+			} else {
+				u.setDefaultPayment(false);
+				userPaymentRepository.save(u);
+			}
+		}
 	}
 }
