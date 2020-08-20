@@ -13,10 +13,12 @@ import com.bookstore.controllers.security.UserRole;
 import com.bookstore.models.User;
 import com.bookstore.models.UserBilling;
 import com.bookstore.models.UserPayment;
+import com.bookstore.models.UserShipping;
 import com.bookstore.repository.PasswordTokenResetRepository;
 import com.bookstore.repository.RoleRepository;
 import com.bookstore.repository.UserPaymentRepository;
 import com.bookstore.repository.UserRepository;
+import com.bookstore.repository.UserShippingRepository;
 import com.bookstore.service.IUserService;
 
 @Service
@@ -35,6 +37,9 @@ public class UserService implements IUserService {
 
 	@Autowired
 	UserPaymentRepository userPaymentRepository;
+	
+	@Autowired
+	UserShippingRepository userShippingRepository;
 	
 	@Override
 	public PasswordResetToken getPasswordResetToken(String token) {
@@ -90,6 +95,15 @@ public class UserService implements IUserService {
 		save(user);
 	}
 
+
+	@Override
+	public void updateUserShipping(UserShipping userShipping, User user) {
+		userShipping.setUser(user);
+		userShipping.setUserShippingDefault(true);
+		user.getUserShippingList().add(userShipping);
+		save(user);
+	}
+	
 	@Override
 	public void setUserDefaultPayment(Long id, User user) {
 		List<UserPayment> userPayments = (List<UserPayment>) userPaymentRepository.findAll();
@@ -101,6 +115,20 @@ public class UserService implements IUserService {
 			} else {
 				u.setDefaultPayment(false);
 				userPaymentRepository.save(u);
+			}
+		}
+	}
+	
+	public void setUserDefaultShipping(Long id, User user) {
+		List<UserShipping> userShippings = (List<UserShipping>) userShippingRepository.findAll();
+		
+		for (UserShipping u : userShippings) {
+			if (u.getId() == id) {
+				u.setUserShippingDefault(true);
+				userShippingRepository.save(u);
+			} else {
+				u.setUserShippingDefault(false);
+				userShippingRepository.save(u);
 			}
 		}
 	}

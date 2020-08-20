@@ -19,11 +19,14 @@ public class UserShipping {
 	private String userShippingCity;
 	private String userShippingState;
 	private String userShippingCountry;
-	private String userShippingZipCode;
-	
+	private String userShippingZipcode;
+	private boolean userShippingDefault;
+
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
+	
+	
 
 	public Long getId() {
 		return id;
@@ -81,12 +84,12 @@ public class UserShipping {
 		this.userShippingCountry = userShippingCountry;
 	}
 
-	public String getUserShippingZipCode() {
-		return userShippingZipCode;
+	public String getUserShippingZipcode() {
+		return userShippingZipcode;
 	}
 
-	public void setUserShippingZipCode(String userShippingZipCode) {
-		this.userShippingZipCode = userShippingZipCode;
+	public void setUserShippingZipcode(String userShippingZipcode) {
+		this.userShippingZipcode = userShippingZipcode;
 	}
 
 	public User getUser() {
@@ -96,4 +99,13 @@ public class UserShipping {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public boolean isUserShippingDefault() {
+		return userShippingDefault;
+	}
+
+	public void setUserShippingDefault(boolean userShippingDefault) {
+		this.userShippingDefault = userShippingDefault;
+	}
+
 }

@@ -35,6 +35,7 @@ import com.bookstore.service.impl.BookService;
 import com.bookstore.service.impl.UserPaymentService;
 import com.bookstore.service.impl.UserSecurityService;
 import com.bookstore.service.impl.UserService;
+import com.bookstore.service.impl.UserShippingService;
 import com.bookstore.utility.SecurityUtility;
 import com.bookstore.utility.USConstants;
 
@@ -54,6 +55,9 @@ public class IndexController {
 
 	@Autowired
 	private UserPaymentService userPaymentService;
+	
+	@Autowired
+	private UserShippingService userShippingService;
 
 	@RequestMapping("/")
 	public String index() {
@@ -342,6 +346,8 @@ public class IndexController {
 		model.addAttribute("user", user);
 		model.addAttribute("userPaymentList", user.getUserPaymentList());
 		model.addAttribute("userShippingList", user.getUserShippingList());
+		model.addAttribute("listOfShippingAddresses", true);
+		model.addAttribute("classActiveShipping", true);
 
 		return "account";
 	}
@@ -364,6 +370,111 @@ public class IndexController {
 		model.addAttribute("userShippingList", user.getUserShippingList());
 		model.addAttribute("listOfCreditCards", true);
 
+		return "account";
+	}
+	
+	@RequestMapping(value="/shipping/add", method=RequestMethod.POST)
+	public String createShipping(@ModelAttribute("userShipping") UserShipping userShipping, 
+			Principal principal, Model model) {
+		User user = userService.findByUsername(principal.getName());
+		model.addAttribute("user", user);
+		userService.updateUserShipping(userShipping, user);
+		
+		model.addAttribute("classActiveShipping", true);
+
+		List<String> stateList = USConstants.listOfUSStatesCode;
+		model.addAttribute("stateList", stateList);
+
+		model.addAttribute("userShippingList", user.getUserShippingList());
+		model.addAttribute("listOfShippingAddresses", true);
+
+		return "account";
+	}
+	
+	@RequestMapping(value="/shipping/edit")
+	public String editShipping(
+			@RequestParam("id") Long shippingId,
+			Principal principal, Model model
+			){
+		User user = userService.findByUsername(principal.getName());
+		Optional<UserShipping> find = userShippingService.findById(shippingId);
+		
+		if (!find.isPresent()) {
+			return "bad-request";
+		}
+		
+		UserShipping userShipping = find.get();
+		
+		if (user.getId() != userShipping.getUser().getId()) {
+			return "bad-request";
+		} else {
+			model.addAttribute("user", user);
+			
+			model.addAttribute("userShipping", userShipping);
+			
+			List<String> stateList = USConstants.listOfUSStatesCode;
+			model.addAttribute("stateList", stateList);
+			
+			model.addAttribute("userShippingList", user.getUserShippingList());
+			
+			model.addAttribute("addNewShippingAddress", true);
+			model.addAttribute("classActiveShipping", true);
+			model.addAttribute("listOfCreditCards", true);
+
+			return "account";
+		}
+	}
+	
+	@RequestMapping(value="/shipping/remove")
+	public String removeShipping(
+			@ModelAttribute("id") Long shippingId,
+			Principal principal, Model model
+			){
+		User user = userService.findByUsername(principal.getName());
+		Optional<UserShipping> find = userShippingService.findById(shippingId);
+		
+		if (!find.isPresent()) {
+			return "bad-request";
+		}
+		
+		UserShipping userShipping = find.get();
+		
+		if (user.getId() != userShipping.getUser().getId()) {
+			return "bad-request";
+		} else {
+			model.addAttribute("user", user);
+			userShippingService.removeById(shippingId);
+			
+			model.addAttribute("userShipping", userShipping);
+
+			model.addAttribute("userPaymentList", user.getUserPaymentList());
+			model.addAttribute("userShippingList", user.getUserShippingList());
+			
+			model.addAttribute("listOfShippingAddresses", true);
+			model.addAttribute("classActiveShipping", true);;
+
+			return "account";
+		}
+	}
+	
+	@RequestMapping(value="/set-default-shipping", method=RequestMethod.POST)
+	public String setDefaultShipping(
+			@ModelAttribute("defaultUserShippingAddressId") Long defaultShippingId,
+			Principal principal, Model model
+			) {
+		
+		User user = userService.findByUsername(principal.getName());
+		userService.setUserDefaultShipping(defaultShippingId, user);
+		
+		model.addAttribute("user", user);
+		
+		model.addAttribute("listOfCreditCards", true);
+		model.addAttribute("classActiveShipping", true);
+		model.addAttribute("listOfShippingAddresses", true);
+		
+		model.addAttribute("userPaymentList", user.getUserPaymentList());
+		model.addAttribute("userShippingList", user.getUserShippingList());
+		
 		return "account";
 	}
 }

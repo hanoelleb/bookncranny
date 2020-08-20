@@ -7,6 +7,7 @@ import com.bookstore.controllers.security.UserRole;
 import com.bookstore.models.User;
 import com.bookstore.models.UserBilling;
 import com.bookstore.models.UserPayment;
+import com.bookstore.models.UserShipping;
 
 public interface IUserService {
 	PasswordResetToken getPasswordResetToken(final String otken);
@@ -23,5 +24,9 @@ public interface IUserService {
 	
 	void updateUserBilling(UserBilling userBilling, UserPayment userPayment, User user);
 	
+	void updateUserShipping(UserShipping userShipping, User user);
+	
 	void setUserDefaultPayment(Long id, User user);
+	
+	void setUserDefaultShipping(Long id, User user);
 }
