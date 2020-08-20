@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bookstore.controllers.security.Role;
 import com.bookstore.controllers.security.UserRole;
@@ -241,7 +242,7 @@ public class IndexController {
 
 	@RequestMapping(value="/card/edit")
 	public String editCard(
-			@ModelAttribute("id") Long creditCardId,
+			@RequestParam("id") Long creditCardId,
 			Principal principal, Model model
 			){
 		User user = userService.findByUsername(principal.getName());
