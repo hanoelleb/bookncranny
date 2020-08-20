@@ -21,4 +21,9 @@ public class UserPaymentService implements IUserPaymentService {
 		return userPaymentRepository.findById(id);
 	}
 
+	@Override
+	public void removeById(Long id) {
+		userPaymentRepository.deleteById(id);
+	}
+
 }

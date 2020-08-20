@@ -275,6 +275,44 @@ public class IndexController {
 			return "account";
 		}
 	}
+	
+	@RequestMapping(value="/card/remove")
+	public String removeCard(
+			@ModelAttribute("id") Long creditCardId,
+			Principal principal, Model model
+			){
+		User user = userService.findByUsername(principal.getName());
+		Optional<UserPayment> find = userPaymentService.findById(creditCardId);
+		
+		if (!find.isPresent()) {
+			return "bad-request";
+		}
+		
+		UserPayment userPayment = find.get();
+		
+		if (user.getId() != userPayment.getUser().getId()) {
+			return "bad-request";
+		} else {
+			model.addAttribute("user", user);
+			userPaymentService.removeById(creditCardId);
+			
+			model.addAttribute("userPayment", userPayment);
+			model.addAttribute("userBilling", userPayment.getUserBilling());
+			
+			List<String> stateList = USConstants.listOfUSStatesCode;
+			model.addAttribute("stateList", stateList);
+			
+			model.addAttribute("userPaymentList", user.getUserPaymentList());
+			model.addAttribute("userShippingList", user.getUserShippingList());
+			
+			model.addAttribute("listOfCreditCards", true);
+			model.addAttribute("classActiveBilling", true);
+			model.addAttribute("listOfShippingAddresses", true);
+
+
+			return "account";
+		}
+	}
 
 	@RequestMapping("/shipping-list")
 	public String shippingList(Model model, Principal principal, HttpServletRequest request) {
