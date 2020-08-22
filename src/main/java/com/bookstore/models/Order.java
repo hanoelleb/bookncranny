@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,10 +30,10 @@ public class Order {
 	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)
 	private List<CartItem> cartItemList;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL)
 	private ShippingAddress shippingAddress;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL)
 	private Payment payment;
 	
 	@ManyToOne

@@ -37,4 +37,14 @@ public class CartItem {
 	@ManyToOne
 	@JoinColumn(name="order_id")
 	private Order order;
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
+	
+	
 }
