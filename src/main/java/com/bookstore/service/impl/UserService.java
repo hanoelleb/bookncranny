@@ -1,5 +1,6 @@
 package com.bookstore.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -7,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookstore.controllers.security.PasswordResetToken;
 import com.bookstore.controllers.security.UserRole;
+import com.bookstore.models.ShoppingCart;
 import com.bookstore.models.User;
 import com.bookstore.models.UserBilling;
 import com.bookstore.models.UserPayment;
@@ -63,6 +66,7 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
+	@Transactional
 	public User createUser(User user, Set<UserRole> userRoles) throws Exception {
 		User localUser = userRepository.findByUsername(user.getUsername());
 		
@@ -74,6 +78,14 @@ public class UserService implements IUserService {
 			}
 			
 			user.getUserRoles().addAll(userRoles);
+			
+			ShoppingCart shoppingCart = new ShoppingCart();
+			shoppingCart.setUser(user);
+			user.setShoppingCart(shoppingCart);
+			
+			user.setUserPaymentList(new ArrayList<UserPayment>());
+			user.setUserShippingList(new ArrayList<UserShipping>());
+			
 			localUser = userRepository.save(user);
 		}
 		
