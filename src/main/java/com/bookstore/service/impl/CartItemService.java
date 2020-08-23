@@ -6,8 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookstore.models.Book;
+import com.bookstore.models.BookToCartItem;
 import com.bookstore.models.CartItem;
 import com.bookstore.models.ShoppingCart;
+import com.bookstore.models.User;
+import com.bookstore.repository.BookToCartItemRepository;
 import com.bookstore.repository.CartItemRepository;
 import com.bookstore.service.ICartItemService;
 
@@ -16,6 +20,9 @@ public class CartItemService implements ICartItemService {
 
 	@Autowired
 	CartItemRepository cartItemRepository;
+	
+	@Autowired
+	BookToCartItemRepository bookToCartItemRepository;
 	
 	@Override
 	public List<CartItem> findShoppingCart(ShoppingCart shoppingCart) {
@@ -32,6 +39,37 @@ public class CartItemService implements ICartItemService {
 		cartItemRepository.save(item);
 		
 		return item;
+	}
+
+	@Override
+	public CartItem addBookToCartItem(Book book, User user, int qty) {
+		List<CartItem> cartItemList = findShoppingCart(user.getShoppingCart());
+		
+		for (CartItem item : cartItemList) {
+			if (book.getId() == item.getBook().getId()) {
+				item.setQty(item.getQty() + qty);
+				item.setSubtotal(new BigDecimal(item.getBook().getOurPrice()).multiply(new BigDecimal(item.getQty())));
+				cartItemRepository.save(item);
+				return item;
+			}
+		}
+		
+		
+		
+		CartItem cartItem = new CartItem();
+		cartItem.setShoppingCart(user.getShoppingCart());
+		cartItem.setBook(book);
+		cartItem.setQty(qty);
+		cartItem.setSubtotal(new BigDecimal(cartItem.getBook().getOurPrice()).multiply(new BigDecimal(cartItem.getQty())));
+		
+		cartItemRepository.save(cartItem);
+		
+		BookToCartItem bookItem = new BookToCartItem();
+		bookItem.setBook(book);
+		bookItem.setCartItem(cartItem);
+		bookToCartItemRepository.save(bookItem);
+		
+		return cartItem;
 	}
 
 }

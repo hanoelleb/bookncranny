@@ -33,8 +33,8 @@
 							<a th:href="@{/book/{id}(id = cartItem.book.id) }">
 								<img class="img-responsive" th:src="#{admin-path}+@{/images/books/}+${cartItem.book.id}+'.png'">
 							</a>
-							<p th:if="${cartItem.book.inStockNumber$gt;10}" style="color:green">In stock</p>
-							<p th:if="${cartItem.book.inStockNumber$lt;=10 and cartItem.book.inStockNumber$gt;0}" style="color:green">
+							<p th:if="${cartItem.book.inStockNumber&gt;10}" style="color:green">In stock</p>
+							<p th:if="${cartItem.book.inStockNumber&lt;=10 and cartItem.book.inStockNumber&gt;0}" style="color:green">
 								Only <span th:text="${cartItem.book.inStockNumber} "></span>in stock
 							</p>
 							<p th:if="${cartItem.book.inStockNumber==0}" style="color:red">Product Unavailable</p>
@@ -42,7 +42,7 @@
 						
 						<div class="col-xs-2">
 							<h5 style="color:#db3208;font-size:large">$<span th:text="${cartItem.book.ourPrice}"
-								th:style="${cartItem.book.inStockNumber}==0? text-decoration: line-through : ''"></span></h5>
+								th:style="${cartItem.book.inStockNumber}==0? 'text-decoration: line-through' : ''"></span></h5>
 						</div>
 						
 						<div class="col-xs-2">
