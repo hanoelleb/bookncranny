@@ -98,5 +98,4 @@ public class CartController {
 		cartItemService.removeCartItem(cartItemService.findById(id).get());
 		return "forward:/cart/view";
 	}
-	
 }
