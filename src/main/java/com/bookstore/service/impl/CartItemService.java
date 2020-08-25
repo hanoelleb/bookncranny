@@ -2,6 +2,7 @@ package com.bookstore.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,22 @@ public class CartItemService implements ICartItemService {
 		bookToCartItemRepository.save(bookItem);
 		
 		return cartItem;
+	}
+
+	@Override
+	public Optional<CartItem> findById(Long id) {
+		return cartItemRepository.findById(id);
+	}
+
+	@Override
+	public void removeCartItem(CartItem item) {
+		List<BookToCartItem> books = item.getBookToCartItemList();
+		for (BookToCartItem book : books) {
+			if (book.getBook() == item.getBook()) {
+				bookToCartItemRepository.delete(book);
+			}
+		}
+		cartItemRepository.delete(item);
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.bookstore.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.bookstore.models.Book;
 import com.bookstore.models.CartItem;
@@ -13,4 +14,8 @@ public interface ICartItemService {
 	CartItem updateCartItem(CartItem item);
 	
 	CartItem addBookToCartItem(Book book, User user, int qty);
+	
+	Optional<CartItem> findById(Long id);
+	
+	void removeCartItem(CartItem item);
 }
