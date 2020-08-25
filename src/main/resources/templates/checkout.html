@@ -61,10 +61,10 @@
 		 							</thead>
 		 							<tbody>
 		 								<tr th:each="shippingAddress : ${shippingAddressList}">
-		 									<td th:text="${shippingAddress.shippingAddressStreet1}+' '+${shippingAddress.shippingAddressStreet2} +
-		 									', ' + ${shippingAddress.shippingAddressCity} + ', ' + ${shippingAddress.shippingAddressState}"></td>
+		 									<td th:text="${shippingAddress.userShippingStreet1}+' '+${shippingAddress.userShippingStreet2} +
+		 									', ' + ${shippingAddress.userShippingCity} + ', ' + ${shippingAddress.userShippingState}"></td>
 		 									<td>
-		 										<a th:href="${/set-shipping(id=${shippingAddress.id})}">Use this address</a>
+		 										<a th:href="@{/set-shipping(id=${shippingAddress.id})}">Use this address</a>
 		 									</td>
 		 								</tr>
 		 							</tbody>
@@ -152,7 +152,7 @@
 		 								<tr th:each="userPayment : ${userPaymentList}">
 		 									<td th:text="${userPayment.cardName}"></td>
 		 									<td>
-		 										<a th:href="${/set-payment(id=${userPayment.id})}">Use this payment</a>
+		 										<a th:href="@{/set-payment(id=${userPayment.id})}">Use this payment</a>
 		 									</td>
 		 								</tr>
 		 							</tbody>	 						
@@ -161,11 +161,10 @@
 		 						<!-- Credit card info -->
 		 						<div class="row">
 										<div class="col-xs-12">
-											<img th:src="@{/image/creditcard.png}" class="img-responsive" /><br />
 											<div class="form-group">
 												<label for="cardType">* Select Card Type: </label> <select
 													class="form-control" id="cardType" name="type"
-													th:value="${payment.type}">
+													th:value="${userPayment.type}">
 													<option value="visa">Visa</option>
 													<option value="mastercard">Mastercard</option>
 													<option value="discover">Discover</option>
@@ -271,7 +270,7 @@
 											type="text" class="form-control" id="billingAddress"
 											placeholder="Street Address 2"
 											th:name="billingAddressStreet2"
-											th:value="${billingAddress.userBillingStreet2}" />
+											th:value="${billingAddress.billingAddressStreet2}" />
 									</div>
 
 									<div class="row">
@@ -321,10 +320,10 @@
 							<div class="panel-heading">
 								<h4 class="panel-title">
 									<a data-toggle="collapse" data-parent="#accordion"
-										href="#reviewItems"> 3. Review Items and Shipping </a>
+										href="#reviewInfo">Review Order</a>
 								</h4>
 							</div>
-							<div id="reviewItems" class="panel-collapse collapse">
+							<div id="reviewInfo" class="panel-collapse collapse">
 								<div class="panel-body">
 									<h4>Choose your shipping method:</h4>
 									<div class="radio">
@@ -352,12 +351,11 @@
 
 									<!-- display products in cart -->
 									<div class="row" th:each="cartItem : ${cartItemList}">
-											method="post">
 											<hr />
 											<div class="col-xs-2">
 												<a th:href="@{/bookDetail(id=${cartItem.book.id})}"> <img
 													class="img-responsive shelf-book"
-													th:src="#{admin-path}+@{/images/books/}+${book.id}+'.png'"
+													th:src="#{admin-path}+@{/images/books/}+${cartItem.book.id}+'.png'"
 													style="width: 70px;" />
 												</a>
 											</div>

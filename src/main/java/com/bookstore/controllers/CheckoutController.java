@@ -1,6 +1,7 @@
 package com.bookstore.controllers;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.bookstore.service.impl.CartItemService;
 import com.bookstore.service.impl.PaymentService;
 import com.bookstore.service.impl.ShippingAddressService;
 import com.bookstore.service.impl.UserService;
+import com.bookstore.utility.USConstants;
 
 @Controller
 @RequestMapping("/checkout")
@@ -46,6 +48,7 @@ public class CheckoutController {
 	private BillingAddress billingAddress = new BillingAddress();
 	private Payment payment = new Payment();
 	
+	@RequestMapping("/view")
 	public String checkoutPage(@RequestParam("id") Long cartId,
 			@RequestParam(value="missingRequiredField", required=false) boolean missingRequiredField, 
 			Model model, Principal principal) {
@@ -70,7 +73,7 @@ public class CheckoutController {
 		}
 		
 		List<UserShipping> userShippingList = user.getUserShippingList();
-		model.addAttribute("userShippingList", userShippingList);
+		model.addAttribute("shippingAddressList", userShippingList);
 		
 		if (userShippingList.size() == 0) {
 			model.addAttribute("emptyShippingList", true);
@@ -99,6 +102,24 @@ public class CheckoutController {
 		}
 		
 		ShoppingCart shoppingCart = user.getShoppingCart();
+		
+		model.addAttribute("shippingAddress", shippingAddress);
+		model.addAttribute("userPayment", payment);
+		model.addAttribute("billingAddress", billingAddress);
+		
+		System.out.println("\n" + items.size() + "\n");
+		
+		model.addAttribute("cartItemList", items);
+		model.addAttribute("shoppingCart", shoppingCart);
+		
+		List<String> stateList = USConstants.listOfUSStatesCode;
+		Collections.sort(stateList);
+		model.addAttribute("stateList", stateList);
+		
+		model.addAttribute("classActiveShipping", true);
+		
+		if (missingRequiredField)
+			model.addAttribute("missingRequiredField", true);
 		
 		return "checkout";
 	}
