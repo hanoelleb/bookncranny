@@ -16,13 +16,16 @@ import com.bookstore.models.Payment;
 import com.bookstore.models.ShippingAddress;
 import com.bookstore.models.ShoppingCart;
 import com.bookstore.models.User;
+import com.bookstore.models.UserBilling;
 import com.bookstore.models.UserPayment;
 import com.bookstore.models.UserShipping;
 import com.bookstore.service.impl.BillingAddressService;
 import com.bookstore.service.impl.CartItemService;
 import com.bookstore.service.impl.PaymentService;
 import com.bookstore.service.impl.ShippingAddressService;
+import com.bookstore.service.impl.UserPaymentService;
 import com.bookstore.service.impl.UserService;
+import com.bookstore.service.impl.UserShippingService;
 import com.bookstore.utility.USConstants;
 
 @Controller
@@ -43,6 +46,12 @@ public class CheckoutController {
 	
 	@Autowired
 	private BillingAddressService billingAddressService;
+	
+	@Autowired
+	private UserShippingService userShippingService;
+	
+	@Autowired
+	private UserPaymentService userPaymentService;
 	
 	private ShippingAddress shippingAddress = new ShippingAddress();
 	private BillingAddress billingAddress = new BillingAddress();
@@ -106,9 +115,6 @@ public class CheckoutController {
 		model.addAttribute("shippingAddress", shippingAddress);
 		model.addAttribute("userPayment", payment);
 		model.addAttribute("billingAddress", billingAddress);
-		
-		System.out.println("\n" + items.size() + "\n");
-		
 		model.addAttribute("cartItemList", items);
 		model.addAttribute("shoppingCart", shoppingCart);
 		
@@ -123,4 +129,98 @@ public class CheckoutController {
 		
 		return "checkout";
 	}
-}
+	
+	@RequestMapping("/set-shipping")
+	public String setShipping(@RequestParam("id") Long shippingId,
+			Model model, Principal principal) {
+		User user = userService.findByUsername(principal.getName());
+		
+		UserShipping userShipping = userShippingService.findById(shippingId).get();
+		
+		if (userShipping.getUser().getId() != user.getId())
+			return "bad-request";
+		else {
+			shippingAddressService.setByUserShipping(userShipping, shippingAddress);
+			List<CartItem> items = cartItemService.findShoppingCart(user.getShoppingCart());
+			
+			BillingAddress billingAddress = new BillingAddress();
+			
+			model.addAttribute("shippingAddress", shippingAddress);
+			model.addAttribute("userPayment", payment);
+			model.addAttribute("billingAddress", billingAddress);
+			model.addAttribute("cartItemList", items);
+			model.addAttribute("shoppingCart", user.getShoppingCart());
+			
+			List<String> stateList = USConstants.listOfUSStatesCode;
+			Collections.sort(stateList);
+			model.addAttribute("stateList", stateList);
+			
+			List<UserPayment> userPayments = user.getUserPaymentList();
+			model.addAttribute("userPaymentList", userPayments);
+			if (userPayments.size() == 0) {
+				model.addAttribute("emptyPaymentList", true);
+			} else {
+				model.addAttribute("emptyPaymentList", false);
+			}
+			
+			List<UserShipping> userShippingList = user.getUserShippingList();
+
+			model.addAttribute("emptyShippingList", false);
+
+			model.addAttribute("shippingAddressList", userShippingList);
+			
+			model.addAttribute("shippingAddress", shippingAddress);
+			
+			model.addAttribute("classActiveShipping", true);
+		}
+		
+		
+		
+		return "checkout";
+	}
+	
+	@RequestMapping("/set-payment")
+	public String setPayment(@RequestParam("id") Long paymentId,
+			Model model, Principal principal) {
+		User user = userService.findByUsername(principal.getName());
+		UserPayment userPayment = userPaymentService.findById(paymentId).get();		
+		UserBilling userBilling = userPayment.getUserBilling();
+		
+		if (userPayment.getUser().getId() != user.getId())
+			return "bad-request";
+		else {
+			paymentService.setByUserPayment(userPayment, payment);
+			List<CartItem> items = cartItemService.findShoppingCart(user.getShoppingCart());
+			
+			billingAddressService.setByUserBilling(userBilling, billingAddress);
+
+			model.addAttribute("shippingAddress", shippingAddress);
+			model.addAttribute("userPayment", payment);
+			model.addAttribute("billingAddress", billingAddress);
+			model.addAttribute("cartItemList", items);
+			model.addAttribute("shoppingCart", user.getShoppingCart());
+			
+			List<String> stateList = USConstants.listOfUSStatesCode;
+			Collections.sort(stateList);
+			model.addAttribute("stateList", stateList);
+			
+			List<UserPayment> userPayments = user.getUserPaymentList();
+			model.addAttribute("userPaymentList", userPayments);
+
+			model.addAttribute("emptyPaymentList", false);
+			
+			List<UserShipping> userShippingList = user.getUserShippingList();
+			if (userShippingList.size() == 0) {
+				model.addAttribute("emptyShippingList", true);
+			} else {
+				model.addAttribute("emptyShippingList", false);
+			}
+			
+			model.addAttribute("shippingAddress", shippingAddress);
+			
+			model.addAttribute("classActivePayment", true);
+		}
+		
+		return "checkout";
+	}
+ }

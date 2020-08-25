@@ -64,7 +64,7 @@
 		 									<td th:text="${shippingAddress.userShippingStreet1}+' '+${shippingAddress.userShippingStreet2} +
 		 									', ' + ${shippingAddress.userShippingCity} + ', ' + ${shippingAddress.userShippingState}"></td>
 		 									<td>
-		 										<a th:href="@{/set-shipping(id=${shippingAddress.id})}">Use this address</a>
+		 										<a th:href="@{/checkout/set-shipping(id=${shippingAddress.id})}">Use this address</a>
 		 									</td>
 		 								</tr>
 		 							</tbody>
@@ -152,7 +152,7 @@
 		 								<tr th:each="userPayment : ${userPaymentList}">
 		 									<td th:text="${userPayment.cardName}"></td>
 		 									<td>
-		 										<a th:href="@{/set-payment(id=${userPayment.id})}">Use this payment</a>
+		 										<a th:href="@{/checkout/set-payment(id=${userPayment.id})}">Use this payment</a>
 		 									</td>
 		 								</tr>
 		 							</tbody>	 						
