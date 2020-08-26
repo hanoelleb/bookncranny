@@ -22,7 +22,6 @@ public class ShoppingCartService implements IShoppingCartService  {
 	
 	@Override
 	public ShoppingCart updateShoppingCart(ShoppingCart shoppingCart) {
-		// TODO Auto-generated method stub
 		BigDecimal total = new BigDecimal(0);
 		List<CartItem> cartItemList = cartItemService.findShoppingCart(shoppingCart);
 		
@@ -40,8 +39,16 @@ public class ShoppingCartService implements IShoppingCartService  {
 
 	@Override
 	public void clearShoppingCart(ShoppingCart shoppingCart) {
-		// TODO Auto-generated method stub
+		List<CartItem> cartItemList = cartItemService.findShoppingCart(shoppingCart);
 		
+		for (CartItem item : cartItemList) {
+			item.setShoppingCart(null);
+			cartItemService.save(item);
+		}
+		
+		shoppingCart.setTotal(new BigDecimal(0));
+		
+		shoppingCartRepository.save(shoppingCart);
 	}
 
 }

@@ -29,15 +29,15 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	
 	@Column(name="id", nullable=false, updatable=false)
-	long id;
-	String username;
+	private Long id;
+	private String username;
 	
 	@Column(name="email", nullable=false, updatable=false)
-	String email;
-	String password;
+	private String email;
+	private String password;
 	
-	String firstName;
-	String lastName;
+	private String firstName;
+	private String lastName;
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="user")
 	private ShoppingCart shoppingCart;
@@ -66,10 +66,10 @@ public class User implements UserDetails {
 	}
 	boolean enabled = true;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getUsername() {

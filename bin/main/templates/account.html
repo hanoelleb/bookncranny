@@ -43,7 +43,7 @@
 					<div class="panel-body"
 						style="background-color: #ededed; margin-top: 20px;">
 						<form th:action="@{/update-info}" method="post">
-							<input type="hidden" name="id" th-value="${user.id}">
+							<input type="hidden" name="id" th:value="${user.id}">
 							<div class="bg-info" th:if="${updateUserInfo}">User info
 								updated.</div>
 
@@ -67,7 +67,7 @@
 
 							<div class="form-group">
 								<input type='password' class="form-control" id="currentPass"
-									name="currentPass" placeholder="Current Password"
+									name="password" placeholder="Current Password"
 									th:value="${password}" />
 							</div>
 							<p>Enter your current password to change password or email.</p>
@@ -78,13 +78,15 @@
 							</div>
 
 							<div class="form-group">
-								<input type='password' class="form-control" id="newPass"
-									name="newPass" placeholder="New Password" />
+								<label for="txtNewPassword">Password</label>&nbsp;<span
+									id="checkPasswordMatch" style="color: red;"></span> <input
+									type="password" class="form-control" id="txtNewPassword"
+									name="newPassword" />
 							</div>
 
 							<div class="form-group">
-								<input type='password' class="form-control" id="confirmPass"
-									placeholder="Confirm new password" />
+								<label for="txtConfirmPassword">Confirm Password</label> ' <input
+									type="password" class="form-control" id="txtConfirmPassword" />
 							</div>
 
 							<button type="submit" class="btn btn-primary">Update</button>
@@ -320,10 +322,12 @@
 						style="background-color: #ededed; margin-top: 20px;">
 						<ol>
 							<li class="breadcrumb-item active"><a
-								th:href="@{/shipping-list}" th:style="${listOfShippingAddresses}">Shipping Addresses</a></li>
+								th:href="@{/shipping-list}"
+								th:style="${listOfShippingAddresses}">Shipping Addresses</a></li>
 
-							<li class="breadcrumb-item active"><a th:href="@{/shipping/add}"
-								th:style="${addNewShippingAddress}">Add new address</a></li>
+							<li class="breadcrumb-item active"><a
+								th:href="@{/shipping/add}" th:style="${addNewShippingAddress}">Add
+									new address</a></li>
 						</ol>
 
 						<div th:if="${listOfShippingAddresses}">
@@ -338,14 +342,18 @@
 									</thead>
 									<tbody>
 										<tr th:each="userShipping : ${userShippingList}">
-											<td><input type="radio" name="defaultUserShippingAddressId"
+											<td><input type="radio"
+												name="defaultUserShippingAddressId"
 												th:value="${userShipping.id}"
-												th:checked="${userShipping.userShippingDefault}"><span> default </span></td>
+												th:checked="${userShipping.userShippingDefault}"><span>
+													default </span></td>
 
-											<td th:text="${userShipping.userShippingStreet1} + ', ' +
+											<td
+												th:text="${userShipping.userShippingStreet1} + ', ' +
 											${userShipping.userShippingCity} + ', ' + ${userShipping.userShippingState}"></td>
 
-											<td><a th:href="@{/shipping/edit(id=${userShipping.id})}"><i
+											<td><a
+												th:href="@{/shipping/edit(id=${userShipping.id})}"><i
 													class="fa fa-pencil"></i></a> <a
 												th:href="@{/shipping/remove(id=${userShipping.id})}"><i
 													class="fa fa-times"></i></a></td>
@@ -372,7 +380,8 @@
 									<label for="shippingName">* Name</label> <input type="text"
 										class="form-control" id="shippingName"
 										placeholder="Receiver Name" th:name="userShippingName"
-										required="required" th:value="${userShipping.userShippingName}" />
+										required="required"
+										th:value="${userShipping.userShippingName}" />
 								</div>
 								<div class="form-group">
 									<label for="shippingAddress">* Street Address</label> <input
@@ -395,7 +404,7 @@
 												th:value="${userShipping.userShippingCity}" />
 										</div>
 									</div>
-									
+
 									<div class="col-xs-4">
 										<div class="form-group">
 											<label for="shippingState">* State</label> <select
@@ -410,7 +419,7 @@
 											</select>
 										</div>
 									</div>
-									
+
 									<div class="col-xs-4">
 										<div class="form-group">
 											<label for="shippingZipcode">* Zipcode</label> <input
@@ -422,8 +431,8 @@
 									</div>
 								</div>
 
-								
-								
+
+
 								<hr />
 								<button type="submit" class="btn btn-primary btn-lg">Save
 									All</button>
@@ -436,6 +445,7 @@
 		<!-- end of tabs -->
 	</div>
 </div>
+<script th:src="@{/js/passwordMatch.js}"></script>
 <!-- end of container -->
 </body>
 </html>

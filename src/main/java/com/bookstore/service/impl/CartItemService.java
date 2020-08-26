@@ -89,4 +89,9 @@ public class CartItemService implements ICartItemService {
 		cartItemRepository.delete(item);
 	}
 
+	@Override
+	public CartItem save(CartItem item) {
+		return cartItemRepository.save(item);
+	}
+
 }

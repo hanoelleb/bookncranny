@@ -18,4 +18,6 @@ public interface ICartItemService {
 	Optional<CartItem> findById(Long id);
 	
 	void removeCartItem(CartItem item);
+	
+	CartItem save(CartItem item);
 }

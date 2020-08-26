@@ -65,8 +65,14 @@ public class UserService implements IUserService {
 		return userRepository.findByEmail(email);
 	}
 	
+
 	@Override
-	@Transactional
+	public User findById(Long id) {
+		return userRepository.findById(id).get();
+	}
+	
+	@Override
+	//@Transactional
 	public User createUser(User user, Set<UserRole> userRoles) throws Exception {
 		User localUser = userRepository.findByUsername(user.getUsername());
 		
@@ -144,4 +150,5 @@ public class UserService implements IUserService {
 			}
 		}
 	}
+
 }

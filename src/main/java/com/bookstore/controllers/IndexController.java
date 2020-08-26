@@ -14,8 +14,11 @@ import javax.swing.text.html.FormSubmitEvent.MethodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -190,6 +193,70 @@ public class IndexController {
 		model.addAttribute("qty", 1);
 
 		return "book-detail";
+	}
+	
+	@RequestMapping(value="/update-info", method=RequestMethod.POST)
+	public String updateInfo(@ModelAttribute("user") User user,
+			@ModelAttribute("newPassword") String newPassword,
+			Model model) {
+		
+		System.out.println("/n" + user.getId());	
+		
+		User current = userService.findById(user.getId());
+		System.out.println("/n" + current.getId());	
+		
+		/*
+		if (userService.findByEmail(user.getEmail())!=null) {
+			System.out.println("flag7");
+			if(userService.findByEmail(user.getEmail()).getId() != current.getId()) {
+				model.addAttribute("emailExists", true);
+				return "account";
+			}
+		}
+		
+		System.out.println("flag6");
+		
+		if (userService.findByUsername(user.getUsername())!=null) {
+			if(userService.findByUsername(user.getUsername()).getId() != current.getId()) {
+				model.addAttribute("usernameExists", true);
+				return "account";
+			}
+		}
+		
+		System.out.println("flag5");
+		*/
+//		update password
+		if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
+			BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
+			String dbPassword = current.getPassword();
+			if(passwordEncoder.matches(user.getPassword(), dbPassword)){
+				current.setPassword(passwordEncoder.encode(newPassword));
+			} else {
+				model.addAttribute("incorrectPassword", true);
+				
+				return "account";
+			}
+		}
+
+		current.setFirstName(user.getFirstName());
+		current.setLastName(user.getLastName());
+		current.setUsername(user.getUsername());
+		current.setEmail(user.getEmail());
+
+		userService.save(current);
+		
+		model.addAttribute("updateSuccess", true);
+		model.addAttribute("user", current);
+		model.addAttribute("classActiveEdit", true);
+		
+		UserDetails userDetails = userSecurityService.loadUserByUsername(current.getUsername());
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+				userDetails.getAuthorities());
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		return "account";
 	}
 
 	@RequestMapping("/card-list")

@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class ShippingAddress {
@@ -20,9 +21,8 @@ public class ShippingAddress {
 	private String shippingAddressCountry;
 	private String shippingAddressZipcode;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;
+	@OneToOne
+	private Order order;
 
 	public Long getId() {
 		return id;
@@ -88,12 +88,12 @@ public class ShippingAddress {
 		this.shippingAddressZipcode = shippingAddressZipcode;
 	}
 
-	public User getUser() {
-		return user;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	
