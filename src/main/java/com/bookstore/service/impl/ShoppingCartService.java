@@ -38,4 +38,10 @@ public class ShoppingCartService implements IShoppingCartService  {
 		return shoppingCart;
 	}
 
+	@Override
+	public void clearShoppingCart(ShoppingCart shoppingCart) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
