@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.bookstore.models.Book;
 import com.bookstore.models.CartItem;
+import com.bookstore.models.Order;
 import com.bookstore.models.ShoppingCart;
 import com.bookstore.models.User;
 
@@ -20,4 +21,6 @@ public interface ICartItemService {
 	void removeCartItem(CartItem item);
 	
 	CartItem save(CartItem item);
+	
+	List<CartItem> findByOrder(Order order);
 }

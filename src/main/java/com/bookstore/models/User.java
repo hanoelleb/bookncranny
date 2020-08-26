@@ -52,6 +52,9 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
 	
+	@OneToMany(mappedBy="user")
+	private List<Order> orderList;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -98,13 +101,10 @@ public class User implements UserDetails {
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		Set<GrantedAuthority> authorities = new HashSet<>();
 		userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
 		return null;
 	}
-	
-	
 	
 	public List<UserShipping> getUserShippingList() {
 		return userShippingList;
@@ -120,6 +120,13 @@ public class User implements UserDetails {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public List<Order> getOrderList() {
+		return orderList;
+	}
+	public void setOrderList(List<Order> orderList) {
+		this.orderList = orderList;
 	}
 	@Override
 	public boolean isAccountNonExpired() {

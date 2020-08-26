@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.bookstore.models.Book;
 import com.bookstore.models.BookToCartItem;
 import com.bookstore.models.CartItem;
+import com.bookstore.models.Order;
 import com.bookstore.models.ShoppingCart;
 import com.bookstore.models.User;
 import com.bookstore.repository.BookToCartItemRepository;
@@ -92,6 +93,11 @@ public class CartItemService implements ICartItemService {
 	@Override
 	public CartItem save(CartItem item) {
 		return cartItemRepository.save(item);
+	}
+
+	@Override
+	public List<CartItem> findByOrder(Order order) {
+		return cartItemRepository.findByOrder(order);
 	}
 
 }

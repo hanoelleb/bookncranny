@@ -41,6 +41,7 @@ public class OrderService implements IOrderService {
 		
 		for (CartItem item: items) {
 			Book book = item.getBook();
+			item.setOrder(order);
 			book.setInStockNumber(book.getInStockNumber() - item.getQty());
 		}
 		
