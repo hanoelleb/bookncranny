@@ -15,21 +15,21 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	//implementation 'org.springframework.boot:spring-boot-starter-jbdc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	
 	
-	implementation 'mysql:mysql-connector-java'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.3.3.RELEASE'
 	
+	implementation 'mysql:mysql-connector-java'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
 	
 	compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '7.0.19'
-	compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
-	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '2.1.2.RELEASE'
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '2.1.2.RELEASE'
 }
 
 test {
