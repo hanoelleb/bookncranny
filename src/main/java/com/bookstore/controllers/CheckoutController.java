@@ -167,6 +167,9 @@ public class CheckoutController {
 			billingAddress.setBillingAddressZipcode(shippingAddress.getShippingAddressZipcode());
 		}
 		
+		System.out.println(shippingAddress.getShippingAddressState());
+		System.out.println(billingAddress.getBillingAddressState());
+		
 		if (shippingAddress.getShippingAddressStreet1().isEmpty() 
 				|| shippingAddress.getShippingAddressCity().isEmpty() 
 				|| shippingAddress.getShippingAddressState().isEmpty() 

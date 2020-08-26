@@ -85,7 +85,7 @@ public class UserBilling {
 		return userBillingZipcode;
 	}
 
-	public void setUserBillingZipCode(String userBillingZipCode) {
+	public void setUserBillingZipcode(String userBillingZipCode) {
 		this.userBillingZipcode = userBillingZipCode;
 	}
 
