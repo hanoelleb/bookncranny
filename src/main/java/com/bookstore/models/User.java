@@ -24,7 +24,6 @@ import com.bookstore.controllers.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "user")
 public class User implements UserDetails {
 	
 	@Id
