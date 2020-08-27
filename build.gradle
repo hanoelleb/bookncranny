@@ -26,7 +26,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	compile group: 'postgresql', name: 'postgresql', version: '9.3-1100-jdbc41'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 	
 	compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '7.0.19'
 	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '2.1.2.RELEASE'
