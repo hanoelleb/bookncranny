@@ -123,6 +123,7 @@ public class IndexController {
 		model.addAttribute("email", email);
 		model.addAttribute("username", username);
 
+		/*
 		if (userService.findByUsername(username) != null) {
 			model.addAttribute("usernameExists", true);
 
@@ -134,6 +135,7 @@ public class IndexController {
 
 			return "sign-up";
 		}
+		*/
 
 		User newUser = new User();
 		newUser.setUsername(username);
